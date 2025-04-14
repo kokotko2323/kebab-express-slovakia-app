@@ -73,7 +73,7 @@ const Dashboard = () => {
       ) || 0;
       setTotalRevenue(revenue);
       
-      // Get users count
+      // Get users count - Fix here: converting count to string
       const { count: userCount, error: userError } = await supabase
         .from('profiles')
         .select('*', { count: 'exact', head: true });
