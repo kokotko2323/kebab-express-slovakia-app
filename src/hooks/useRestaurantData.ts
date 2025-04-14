@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,15 +32,15 @@ export function useRestaurantData() {
       ) || 0;
       setTotalRevenue(revenue);
       
-      // Fix for the type error - explicitly convert count to number
+      // Fix for the type error - explicitly convert count to string if needed
       const { count, error: userError } = await supabase
         .from('profiles')
         .select('*', { count: 'exact', head: true });
       
       if (userError) throw userError;
       
-      // Explicitly convert count to number to fix TypeScript error
-      setUsersCount(count !== null ? Number(count) : 0);
+      // Explicitly convert count to string to fix TypeScript error
+      setUsersCount(count !== null ? count.toString() : '0'); // converted count to string
       
       const { data: settings, error: settingsError } = await supabase
         .from('restaurant_settings')
