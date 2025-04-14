@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
@@ -44,7 +43,7 @@ const UserManagement = () => {
           address: user.user_metadata?.address || '',
           createdAt: user.created_at,
           lastSignIn: user.last_sign_in_at,
-          orderCount: userOrders.length,
+          orderCount: userOrders.length.toString(), // Converted orderCount to string
           totalSpent
         };
       }) || [];
