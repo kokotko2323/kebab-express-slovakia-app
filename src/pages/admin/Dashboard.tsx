@@ -73,14 +73,15 @@ const Dashboard = () => {
       ) || 0;
       setTotalRevenue(revenue);
       
-      // Get users count - Fix here: converting count to string
-      const { count: userCount, error: userError } = await supabase
+      // Get users count - Fix here: converting count to number
+      const { count, error: userError } = await supabase
         .from('profiles')
         .select('*', { count: 'exact', head: true });
       
       if (userError) throw userError;
       
-      setUsersCount(userCount || 0);
+      // Fix here: Ensure count is treated as a number
+      setUsersCount(count !== null ? Number(count) : 0);
       
       // Get restaurant status
       const { data: settings, error: settingsError } = await supabase
