@@ -5,8 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { restaurantInfo } from '@/data/menuData';
 import { Clock, MapPin, Phone } from 'lucide-react';
+import { useRestaurantStatus } from '@/hooks/useRestaurantStatus';
 
 const Index = () => {
+  const { isOpen, customMessage } = useRestaurantStatus();
+  
   return (
     <MobileLayout>
       {/* Hero Section */}
@@ -22,6 +25,14 @@ const Index = () => {
           <p className="mt-1 drop-shadow-md">Najlepší kebab v Leviciach</p>
         </div>
       </div>
+      
+      {/* Restaurant Status */}
+      {!isOpen && customMessage && (
+        <div className="mt-4 bg-red-100 border border-red-200 rounded-lg p-3 text-red-700 text-center">
+          <p className="font-medium">Reštaurácia je momentálne zatvorená</p>
+          {customMessage && <p className="text-sm mt-1">{customMessage}</p>}
+        </div>
+      )}
       
       {/* Main Content */}
       <div className="mt-6 space-y-8">
@@ -46,34 +57,34 @@ const Index = () => {
             <h2 className="text-lg font-bold">Otváracie hodiny</h2>
           </div>
           
-          <div className="grid grid-cols-2 gap-2 text-sm">
-            <div className="flex justify-between pr-4">
-              <span>Pondelok:</span>
-              <span className="font-medium">{restaurantInfo.openingHours.monday}</span>
+          <div className="grid grid-cols-1 gap-2 text-sm">
+            <div className="flex justify-between">
+              <span className="font-medium w-1/3">Pondelok:</span>
+              <span className="w-2/3">{restaurantInfo.openingHours.monday}</span>
             </div>
-            <div className="flex justify-between pr-4">
-              <span>Utorok:</span>
-              <span className="font-medium">{restaurantInfo.openingHours.tuesday}</span>
+            <div className="flex justify-between">
+              <span className="font-medium w-1/3">Utorok:</span>
+              <span className="w-2/3">{restaurantInfo.openingHours.tuesday}</span>
             </div>
-            <div className="flex justify-between pr-4">
-              <span>Streda:</span>
-              <span className="font-medium">{restaurantInfo.openingHours.wednesday}</span>
+            <div className="flex justify-between">
+              <span className="font-medium w-1/3">Streda:</span>
+              <span className="w-2/3">{restaurantInfo.openingHours.wednesday}</span>
             </div>
-            <div className="flex justify-between pr-4">
-              <span>Štvrtok:</span>
-              <span className="font-medium">{restaurantInfo.openingHours.thursday}</span>
+            <div className="flex justify-between">
+              <span className="font-medium w-1/3">Štvrtok:</span>
+              <span className="w-2/3">{restaurantInfo.openingHours.thursday}</span>
             </div>
-            <div className="flex justify-between pr-4">
-              <span>Piatok:</span>
-              <span className="font-medium">{restaurantInfo.openingHours.friday}</span>
+            <div className="flex justify-between">
+              <span className="font-medium w-1/3">Piatok:</span>
+              <span className="w-2/3">{restaurantInfo.openingHours.friday}</span>
             </div>
-            <div className="flex justify-between pr-4">
-              <span>Sobota:</span>
-              <span className="font-medium">{restaurantInfo.openingHours.saturday}</span>
+            <div className="flex justify-between">
+              <span className="font-medium w-1/3">Sobota:</span>
+              <span className="w-2/3">{restaurantInfo.openingHours.saturday}</span>
             </div>
-            <div className="flex justify-between pr-4 col-span-2">
-              <span>Nedeľa:</span>
-              <span className="font-medium">{restaurantInfo.openingHours.sunday}</span>
+            <div className="flex justify-between">
+              <span className="font-medium w-1/3">Nedeľa:</span>
+              <span className="w-2/3">{restaurantInfo.openingHours.sunday}</span>
             </div>
           </div>
         </div>
@@ -87,11 +98,17 @@ const Index = () => {
           
           <p className="text-sm mb-4">{restaurantInfo.address}</p>
           
-          <div className="h-40 rounded-lg overflow-hidden bg-gray-200">
-            {/* Here would be a map, for now we'll use a placeholder */}
-            <div className="h-full w-full bg-gray-200 flex items-center justify-center text-gray-500">
-              Mapa
-            </div>
+          <div className="rounded-lg overflow-hidden bg-gray-200 h-auto">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2658.4289596883445!2d18.604208800000002!3d48.2176141!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476add8ffd928399%3A0xa6f647add0fc009e!2sAnkara%20Kebab!5e0!3m2!1sen!2ssk!4v1744628308326!5m2!1sen!2ssk" 
+              width="100%" 
+              height="300" 
+              style={{ border: 0 }} 
+              allowFullScreen 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Kebab Express Location"
+            ></iframe>
           </div>
           
           <div className="mt-4 flex items-center">

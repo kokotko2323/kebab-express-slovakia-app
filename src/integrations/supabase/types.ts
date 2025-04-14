@@ -9,6 +9,54 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      orders: {
+        Row: {
+          created_at: string | null
+          customer_email: string | null
+          customer_name: string
+          customer_phone: string
+          delivery_address: string | null
+          delivery_method: string
+          id: string
+          items: Json
+          payment_method: string
+          status: string
+          total_amount: number
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          customer_email?: string | null
+          customer_name: string
+          customer_phone: string
+          delivery_address?: string | null
+          delivery_method: string
+          id?: string
+          items: Json
+          payment_method: string
+          status?: string
+          total_amount: number
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          customer_email?: string | null
+          customer_name?: string
+          customer_phone?: string
+          delivery_address?: string | null
+          delivery_method?: string
+          id?: string
+          items?: Json
+          payment_method?: string
+          status?: string
+          total_amount?: number
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -30,6 +78,30 @@ export type Database = {
           id?: string
           updated_at?: string | null
           username?: string | null
+        }
+        Relationships: []
+      }
+      restaurant_settings: {
+        Row: {
+          custom_message: string | null
+          id: number
+          is_open: boolean | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          custom_message?: string | null
+          id?: number
+          is_open?: boolean | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          custom_message?: string | null
+          id?: number
+          is_open?: boolean | null
+          updated_at?: string | null
+          updated_by?: string | null
         }
         Relationships: []
       }
