@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -23,7 +22,6 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    // Check if admin is logged in
     const checkAdmin = async () => {
       const { data } = await supabase.auth.getSession();
       
@@ -52,7 +50,6 @@ const Dashboard = () => {
     try {
       setIsLoading(true);
       
-      // Get orders data
       const { data: orders, error: orderError } = await supabase
         .from('orders')
         .select('*');
@@ -61,29 +58,24 @@ const Dashboard = () => {
       
       setOrdersCount(orders?.length || 0);
       
-      // Calculate pending orders
       const pending = orders?.filter(order => 
         ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'DELIVERING'].includes(order.status)
       ).length || 0;
       setPendingOrders(pending);
       
-      // Calculate total revenue
       const revenue = orders?.reduce((sum, order) => 
         order.status !== 'CANCELLED' ? sum + parseFloat(order.total_amount) : sum, 0
       ) || 0;
       setTotalRevenue(revenue);
       
-      // Get users count - Fix here: converting count to number
       const { count, error: userError } = await supabase
         .from('profiles')
         .select('*', { count: 'exact', head: true });
       
       if (userError) throw userError;
       
-      // Fix here: Ensure count is treated as a number
       setUsersCount(count !== null ? Number(count) : 0);
       
-      // Get restaurant status
       const { data: settings, error: settingsError } = await supabase
         .from('restaurant_settings')
         .select('*')
@@ -117,7 +109,6 @@ const Dashboard = () => {
   
   const toggleRestaurantStatus = async () => {
     try {
-      // Get current settings
       const { data: settings, error: getError } = await supabase
         .from('restaurant_settings')
         .select('*')
@@ -128,7 +119,6 @@ const Dashboard = () => {
       if (getError && getError.code !== 'PGRST116') throw getError;
       
       if (settings) {
-        // Update existing settings
         const { error: updateError } = await supabase
           .from('restaurant_settings')
           .update({ is_open: !settings.is_open })
@@ -141,7 +131,6 @@ const Dashboard = () => {
           ? 'Reštaurácia bola otvorená' 
           : 'Reštaurácia bola zatvorená');
       } else {
-        // Create new settings
         const { error: insertError } = await supabase
           .from('restaurant_settings')
           .insert({ is_open: false });
@@ -167,7 +156,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Admin Header */}
       <header className="bg-white shadow sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
@@ -208,9 +196,7 @@ const Dashboard = () => {
         </div>
       </header>
       
-      {/* Admin Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Dashboard Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-sm font-medium text-gray-500 mb-1">Celkový počet objednávok</h2>
@@ -233,7 +219,6 @@ const Dashboard = () => {
           </div>
         </div>
         
-        {/* Admin Tabs */}
         <div className="bg-white rounded-lg shadow mb-6">
           <div className="flex border-b overflow-x-auto">
             <button
@@ -285,7 +270,6 @@ const Dashboard = () => {
           </div>
         </div>
         
-        {/* Tab Content */}
         {activeTab === 'orders' && <OrderManagement onOrderUpdate={fetchDashboardData} />}
         {activeTab === 'users' && <UserManagement />}
         {activeTab === 'settings' && <RestaurantSettings />}
