@@ -44,10 +44,10 @@ const RestaurantSettings = () => {
     try {
       setIsSaving(true);
       
-      // Get current settings
+      // Check if settings exist
       const { data, error: getError } = await supabase
         .from('restaurant_settings')
-        .select('*')
+        .select('id, is_open')
         .order('id', { ascending: true })
         .limit(1)
         .single();

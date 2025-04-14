@@ -43,7 +43,7 @@ const UserManagement = () => {
           address: user.user_metadata?.address || '',
           createdAt: user.created_at,
           lastSignIn: user.last_sign_in_at,
-          orderCount: userOrders.length.toString(), // Converted orderCount to string
+          orderCount: userOrders.length,
           totalSpent
         };
       }) || [];

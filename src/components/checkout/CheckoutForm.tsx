@@ -65,6 +65,9 @@ const CheckoutForm = () => {
     setIsSubmitting(true);
     
     try {
+      // Parse items to string if they're objects to fix any potential issues
+      const serializedItems = JSON.stringify(items);
+      
       // Create order object
       const order = {
         customer_name: name,
@@ -74,7 +77,7 @@ const CheckoutForm = () => {
         delivery_method: deliveryMethod,
         payment_method: paymentMethod,
         total_amount: totalPrice,
-        items: JSON.stringify(items),
+        items: serializedItems,
         status: 'PENDING',
         user_id: user?.id || null
       };
