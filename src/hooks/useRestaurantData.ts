@@ -33,7 +33,7 @@ export function useRestaurantData() {
       ) || 0;
       setTotalRevenue(revenue);
       
-      // Fix for the type error - explicitly convert count to number if needed
+      // Fix for the type error - convert count to number explicitly
       const { count, error: userError } = await supabase
         .from('profiles')
         .select('*', { count: 'exact', head: true });
