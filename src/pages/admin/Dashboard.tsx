@@ -4,12 +4,11 @@ import DashboardHeader from '@/components/admin/DashboardHeader';
 import DashboardStats from '@/components/admin/DashboardStats';
 import DashboardTabs from '@/components/admin/DashboardTabs';
 import OrderManagement from './OrderManagement';
-import UserManagement from './UserManagement';
 import RestaurantSettings from './RestaurantSettings';
 import { useAdmin } from '@/hooks/useAdmin';
 import { useRestaurantData } from '@/hooks/useRestaurantData';
 
-type TabType = 'orders' | 'users' | 'settings';
+type TabType = 'orders' | 'settings';
 
 const Dashboard = () => {
   const { isAdmin, isLoading, handleLogout } = useAdmin();
@@ -17,7 +16,6 @@ const Dashboard = () => {
     ordersCount, 
     pendingOrders, 
     totalRevenue, 
-    usersCount, 
     isRestaurantOpen, 
     fetchDashboardData, 
     toggleRestaurantStatus 
@@ -46,17 +44,40 @@ const Dashboard = () => {
           ordersCount={ordersCount}
           pendingOrders={pendingOrders}
           totalRevenue={totalRevenue}
-          usersCount={usersCount}
+          usersCount={0}
         />
         
-        <DashboardTabs 
-          activeTab={activeTab}
-          pendingOrders={pendingOrders}
-          setActiveTab={setActiveTab}
-        />
+        <div className="bg-white rounded-lg shadow mb-6">
+          <div className="flex border-b">
+            <button
+              className={`px-6 py-3 text-sm font-medium ${
+                activeTab === 'orders'
+                  ? 'text-kebab-primary border-b-2 border-kebab-primary'
+                  : 'text-gray-500 hover:text-kebab-primary'
+              }`}
+              onClick={() => setActiveTab('orders')}
+            >
+              Objednávky {pendingOrders > 0 && (
+                <span className="ml-1 px-1.5 py-0.5 text-xs bg-red-100 text-red-800 rounded-full">
+                  {pendingOrders}
+                </span>
+              )}
+            </button>
+            
+            <button
+              className={`px-6 py-3 text-sm font-medium ${
+                activeTab === 'settings'
+                  ? 'text-kebab-primary border-b-2 border-kebab-primary'
+                  : 'text-gray-500 hover:text-kebab-primary'
+              }`}
+              onClick={() => setActiveTab('settings')}
+            >
+              Nastavenia
+            </button>
+          </div>
+        </div>
         
         {activeTab === 'orders' && <OrderManagement onOrderUpdate={fetchDashboardData} />}
-        {activeTab === 'users' && <UserManagement />}
         {activeTab === 'settings' && <RestaurantSettings />}
       </main>
     </div>

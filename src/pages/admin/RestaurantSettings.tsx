@@ -29,7 +29,7 @@ const RestaurantSettings = () => {
       if (error && error.code !== 'PGRST116') throw error;
       
       if (data) {
-        setIsOpen(data.is_open);
+        setIsOpen(data.is_open ?? true);
         setCustomMessage(data.custom_message || '');
       }
     } catch (error) {

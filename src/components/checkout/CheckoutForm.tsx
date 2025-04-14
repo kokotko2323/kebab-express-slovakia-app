@@ -5,13 +5,11 @@ import { useCart } from '@/components/cart/CartProvider';
 import { useNavigate } from 'react-router-dom';
 import { DeliveryMethod, PaymentMethod } from '@/types';
 import { toast } from 'sonner';
-import { useAuth } from '@/components/auth/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { useRestaurantStatus } from '@/hooks/useRestaurantStatus';
 
 const CheckoutForm = () => {
   const { items, totalPrice, clearCart } = useCart();
-  const { user } = useAuth();
   const { isOpen } = useRestaurantStatus();
   const navigate = useNavigate();
   
@@ -22,19 +20,6 @@ const CheckoutForm = () => {
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>('DELIVERY');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('CASH');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  // Load user info if logged in
-  useEffect(() => {
-    if (user) {
-      const metadata = user.user_metadata;
-      if (metadata) {
-        setName(metadata.name || '');
-        setEmail(user.email || '');
-        setPhone(metadata.phone || '');
-        setAddress(metadata.address || '');
-      }
-    }
-  }, [user]);
   
   // Validate cart is not empty
   useEffect(() => {
@@ -79,7 +64,7 @@ const CheckoutForm = () => {
         total_amount: totalPrice,
         items: serializedItems,
         status: 'PENDING',
-        user_id: user?.id || null
+        user_id: null // No user authentication, just place order directly
       };
       
       // Save to Supabase
@@ -282,30 +267,6 @@ const CheckoutForm = () => {
                   )}
                 </div>
                 <span className="font-medium">Kartou pri prevzatí</span>
-              </div>
-            </div>
-            
-            <div
-              className={`border rounded-lg p-3 cursor-pointer ${
-                paymentMethod === 'ONLINE'
-                  ? 'border-kebab-primary bg-kebab-primary/5'
-                  : 'border-gray-200'
-              }`}
-              onClick={() => setPaymentMethod('ONLINE')}
-            >
-              <div className="flex items-center gap-2">
-                <div
-                  className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                    paymentMethod === 'ONLINE'
-                      ? 'border-kebab-primary'
-                      : 'border-gray-300'
-                  }`}
-                >
-                  {paymentMethod === 'ONLINE' && (
-                    <div className="w-3 h-3 rounded-full bg-kebab-primary"></div>
-                  )}
-                </div>
-                <span className="font-medium">Online platba</span>
               </div>
             </div>
           </div>

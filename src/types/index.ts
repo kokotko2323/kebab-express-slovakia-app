@@ -14,7 +14,7 @@ export interface CartItem extends MenuItem {
   quantity: number;
 }
 
-export type PaymentMethod = 'CASH' | 'CARD' | 'ONLINE';
+export type PaymentMethod = 'CASH' | 'CARD';
 export type DeliveryMethod = 'DELIVERY' | 'PICKUP';
 
 export interface OrderDetails {
@@ -40,12 +40,3 @@ export type OrderStatus =
   | 'DELIVERED' 
   | 'COMPLETED' 
   | 'CANCELLED';
-
-export interface User {
-  id: string;
-  email: string;
-  name?: string;
-  phone?: string;
-  address?: string;
-  orders?: OrderDetails[];
-}

@@ -7,7 +7,6 @@ export function useRestaurantData() {
   const [ordersCount, setOrdersCount] = useState(0);
   const [pendingOrders, setPendingOrders] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
-  const [usersCount, setUsersCount] = useState(0);
   const [isRestaurantOpen, setIsRestaurantOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -32,16 +31,6 @@ export function useRestaurantData() {
         order.status !== 'CANCELLED' ? sum + parseFloat(order.total_amount) : sum, 0
       ) || 0;
       setTotalRevenue(revenue);
-      
-      // Fix for the type error - convert count to number explicitly
-      const { count, error: userError } = await supabase
-        .from('profiles')
-        .select('*', { count: 'exact', head: true });
-      
-      if (userError) throw userError;
-      
-      // Fix TypeScript error by ensuring count is a number
-      setUsersCount(count !== null ? Number(count) : 0);
       
       const { data: settings, error: settingsError } = await supabase
         .from('restaurant_settings')
@@ -110,7 +99,6 @@ export function useRestaurantData() {
     ordersCount,
     pendingOrders,
     totalRevenue,
-    usersCount,
     isRestaurantOpen,
     isLoading,
     fetchDashboardData,
